@@ -84,9 +84,7 @@ class ZarosHosidiusThief(ZarosBot):
             if rd.random_chance(probability=0.05) and self.take_breaks:
                 self.take_break(max_seconds=130, fancy=True)
 
-            # 8% chance to convert fish to chunks early.
-            if rd.random_chance(probability=.08):
-                self.drop_all()
+            
 
             x, y = self.win.inventory_slots[-1].get_center()  # get pixel position of last slot
             self.empty_slot_clr = pag.pixel(x, y)
