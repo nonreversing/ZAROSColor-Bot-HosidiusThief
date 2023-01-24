@@ -79,7 +79,8 @@ class ZarosHosidiusThief(ZarosBot):
         start_time = time.time()
         end_time = self.running_time * 60
         n = 0
-        p = random.randint(3, 7)
+        p = random.randint(18, 23)
+        self.log_msg("Thieving...")
 
         while time.time() - start_time < end_time:
             # -- Perform bot actions here --
@@ -89,7 +90,6 @@ class ZarosHosidiusThief(ZarosBot):
 
 
             stalls = self.get_all_tagged_in_rect(self.win.game_view, clr.PINK)
-            self.log_msg("Thieving...")
             for stall in stalls:
                 n += 1
                 if stall := self.get_nearest_tag(clr.PINK):
@@ -97,11 +97,11 @@ class ZarosHosidiusThief(ZarosBot):
                     if not self.mouseover_text(contains="Steal"):
                         continue
                     self.mouse.click()
-                    time.sleep(1.2)
+                    time.sleep(1.4)
                     if n >= p:
                         self.__empty_inv()
                         n = 0
-                time.sleep(0.8)
+                time.sleep(1.2)
             self.update_progress((time.time() - start_time) / end_time)
 
         self.update_progress(1)
@@ -113,6 +113,7 @@ class ZarosHosidiusThief(ZarosBot):
         self.set_status(BotStatus.STOPPED)
 
     def __empty_inv(self):
+        self.log_msg("Dropping inventory.")
         pag.keyDown("shift")
         cookingapple_img = imsearch.BOT_IMAGES.joinpath("items", "Cookingapple.png")
         while cookingapple_inv := imsearch.search_img_in_rect(cookingapple_img, self.win.control_panel):
@@ -173,4 +174,9 @@ class ZarosHosidiusThief(ZarosBot):
             self.mouse.click()
             time.sleep(.1)
 
+        papayafruit_img = imsearch.BOT_IMAGES.joinpath("items", "papayafruit.png")
+        while papayafruit_inv := imsearch.search_img_in_rect(papayafruit_img, self.win.control_panel):
+            self.mouse.move_to(papayafruit_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
         pag.keyUp("shift")
