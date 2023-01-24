@@ -68,8 +68,8 @@ class ZarosHosidiusThief(ZarosBot):
         Visit the Wiki for more.
         """
         # Setup APIs
-        api_m = MorgHTTPSocket()
-        api_s = StatusSocket()
+        # api_m = MorgHTTPSocket()
+        # api_s = StatusSocket()
 
         # Main loop
         self.log_msg("Selecting inventory...")
@@ -78,31 +78,30 @@ class ZarosHosidiusThief(ZarosBot):
 
         start_time = time.time()
         end_time = self.running_time * 60
+        n = 0
+        p = random.randint(3, 7)
+
         while time.time() - start_time < end_time:
             # -- Perform bot actions here --
             # 5% chance to take a break between clicks
             if rd.random_chance(probability=0.05) and self.take_breaks:
                 self.take_break(max_seconds=130, fancy=True)
 
-            
-
-            x, y = self.win.inventory_slots[-1].get_center()  # get pixel position of last slot
-            self.empty_slot_clr = pag.pixel(x, y)
 
             stalls = self.get_all_tagged_in_rect(self.win.game_view, clr.PINK)
+            self.log_msg("Thieving...")
             for stall in stalls:
+                n += 1
                 if stall := self.get_nearest_tag(clr.PINK):
-                    n = 0
-                    self.log_msg("Thieving...")
                     self.mouse.move_to(stall.random_point())
                     if not self.mouseover_text(contains="Steal"):
                         continue
                     self.mouse.click()
-                    # Helps synchronize your movements to cormorant travel time.
-                    time.sleep(1.8)
-                if self.__inv_full():
-                    self.drop_all()
-                time.sleep(random.uniform(1.2, 1.8))
+                    time.sleep(1.2)
+                    if n >= p:
+                        self.__empty_inv()
+                        n = 0
+                time.sleep(0.8)
             self.update_progress((time.time() - start_time) / end_time)
 
         self.update_progress(1)
@@ -113,6 +112,65 @@ class ZarosHosidiusThief(ZarosBot):
         self.logout()
         self.set_status(BotStatus.STOPPED)
 
-    def __inv_full(self):
-        x, y = self.win.inventory_slots[-1].get_center()
-        return pag.pixel(x, y) != self.empty_slot_clr
+    def __empty_inv(self):
+        pag.keyDown("shift")
+        cookingapple_img = imsearch.BOT_IMAGES.joinpath("items", "Cookingapple.png")
+        while cookingapple_inv := imsearch.search_img_in_rect(cookingapple_img, self.win.control_panel):
+
+            self.mouse.move_to(cookingapple_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+
+        banana_img = imsearch.BOT_IMAGES.joinpath("items", "Banana.png")
+        while banana_inv := imsearch.search_img_in_rect(banana_img, self.win.control_panel):
+
+            self.mouse.move_to(banana_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+
+        pineapple_img = imsearch.BOT_IMAGES.joinpath("items", "Pineapple.png")
+        while pineapple_inv := imsearch.search_img_in_rect(pineapple_img, self.win.control_panel):
+
+            self.mouse.move_to(pineapple_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+
+        lemon_img = imsearch.BOT_IMAGES.joinpath("items", "lemon.png")
+        while lemon_inv := imsearch.search_img_in_rect(lemon_img, self.win.control_panel):
+
+            self.mouse.move_to(lemon_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+
+        lime_img = imsearch.BOT_IMAGES.joinpath("items", "Lime.png")
+        while lime_inv := imsearch.search_img_in_rect(lime_img, self.win.control_panel):
+
+            self.mouse.move_to(lime_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+        redberries_img = imsearch.BOT_IMAGES.joinpath("items", "Redberries.png")
+        while redberries_inv := imsearch.search_img_in_rect(redberries_img, self.win.control_panel):
+
+            self.mouse.move_to(redberries_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+        jangerberries_img = imsearch.BOT_IMAGES.joinpath("items", "jangerberries.png")
+        while jangerberries_inv := imsearch.search_img_in_rect(jangerberries_img, self.win.control_panel):
+
+            self.mouse.move_to(jangerberries_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+
+        strawberry_img = imsearch.BOT_IMAGES.joinpath("items", "strawberry.png")
+        while strawberry_inv := imsearch.search_img_in_rect(strawberry_img, self.win.control_panel):
+            self.mouse.move_to(strawberry_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+
+        strangefruit_img = imsearch.BOT_IMAGES.joinpath("items", "strangefruit.png")
+        while strangefruit_inv := imsearch.search_img_in_rect(strangefruit_img, self.win.control_panel):
+            self.mouse.move_to(strangefruit_inv.random_point())
+            self.mouse.click()
+            time.sleep(.1)
+
+        pag.keyUp("shift")
